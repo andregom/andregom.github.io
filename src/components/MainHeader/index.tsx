@@ -1,7 +1,8 @@
 import React, {useMemo} from 'react';
 import { sanitize } from 'dompurify';
 
-import emojis from '../../utils/emojis'
+import Toggle from '../Toggle';
+import emojis from '../../utils/emojis';
 
 import {
     Container,
@@ -19,10 +20,10 @@ const MainHeader: React.FC = () => {
     }, [])
     return (
         <Container>
-            <h1>Toggle</h1>
+            <Toggle />
 
             <Profile>
-                <Welcome>Olá, <div dangerouslySetInnerHTML= {{ __html: sanitize(emoji)}} /></Welcome>
+                <Welcome>Olá, <div style = {{display:'inline'}} dangerouslySetInnerHTML= {{ __html: sanitize(emoji)}} /></Welcome>
                 <UserName>André Gomes</UserName>
             </Profile>
         </Container>

@@ -6,8 +6,8 @@ color: ${props => props.theme.color.white};
 background-color: ${props => props.theme.color.secondary};
 
 display: flex;
-justify-content: space-between;
 align-items: center;
+justify-content: space-between;
 
 padding: 0 10px;
 
