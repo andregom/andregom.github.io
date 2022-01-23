@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import dark from './styles/themes/dark';
 import light from './styles/themes/light';
 import Dashboard from './pages/Dashboard';
+import List from './pages/List';
 
 ReactDOM.render(
   
@@ -14,7 +15,7 @@ ReactDOM.render(
     <React.StrictMode>
     <GlobalStyles />
     <Layout>
-      <Dashboard />
+      <List />
     </Layout>
     </React.StrictMode>
   </ThemeProvider>,
