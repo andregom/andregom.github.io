@@ -6,7 +6,6 @@ import {
 } from './slyles';
 
 interface BallanceHistoryCardProps {
-    cardColor: string;
     tagColor: string;
     title: string;
     subtitle: string;
@@ -14,14 +13,13 @@ interface BallanceHistoryCardProps {
 }
 
 const BallanceHistoryCard: React.FC<BallanceHistoryCardProps> = ({
-    cardColor,
     tagColor,
     title,
     subtitle,
     amount
 }) => {
     return (
-        <Container color={cardColor}>
+        <Container>
             <Tag color={tagColor} />
             <div>
                 <span>{title}</span>
