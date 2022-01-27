@@ -7,3 +7,42 @@ export const Container = styled.div`
 export const Content = styled.div`
 
 `
+
+export const Filters = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    .tag-filter {
+        font-size: 18px;
+        font-weight: 500;
+        background: none;
+        color: ${props => props.theme.color.white};
+
+        margin: 0 10px;
+
+        transition: opacity .3s;
+
+        &:hover {
+            opacity: .7;
+        }
+    }
+
+    .tag-filter::after {
+        content: '';
+        display: block;
+        min-width: 70px;
+        max-width: 80%;
+        margin: 2.5px auto;
+        margin-right: 2.5px;
+    }
+
+    .tag-filter-recurrent::after {
+        border-bottom: 10px solid ${props => props.theme.color.warning}
+    }
+
+    .tag-filter-eventual::after {
+        border-bottom: 10px solid ${props => props.theme.color.success}
+    }
+`
