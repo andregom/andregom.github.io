@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
     MdDashboard,
     MdArrowDownward,
@@ -24,22 +25,30 @@ const Aside: React.FC = () => {
             </Header>
 
             <MenuContainer>
-                <MenuItemLink href="/dashboard">
-                    <MdDashboard />
-                    Dashboard
-                </MenuItemLink>
-                <MenuItemLink href="/list/entry-ballance">
-                    <MdArrowUpward />
-                    Entradas
-                </MenuItemLink>
-                <MenuItemLink href="/list/exit-ballance">
-                    <MdArrowDownward />
-                    Saídas
-                </MenuItemLink>
-                <MenuItemLink href="#">
-                    <MdExitToApp />
-                    Sair
-                </MenuItemLink>
+                <Link to="/dashboard">
+                    <MenuItemLink>
+                        <MdDashboard />
+                        Dashboard
+                    </MenuItemLink>
+                </Link>
+                <Link to="/list/entry-ballance">
+                    <MenuItemLink>
+                        <MdArrowUpward />
+                        Entradas
+                    </MenuItemLink>
+                </Link>
+                <Link to="/list/exit-ballance">
+                    <MenuItemLink>
+                        <MdArrowDownward />
+                        Saídas
+                    </MenuItemLink>
+                </Link>
+                <Link to="#">
+                    <MenuItemLink>
+                        <MdExitToApp />
+                        Sair
+                    </MenuItemLink>
+                </Link>
             </MenuContainer>
         </Container>
     )

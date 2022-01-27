@@ -21,15 +21,21 @@ export const Title = styled.h3`
     color: ${props => props.theme.color.white};
     margin-left: 10px;
 `;
+
 export const MenuContainer = styled.nav`
     display: flex;
     flex-direction: column;
     maring-top: 50px;
+
+    > * {
+        text-decoration: none;
+    }
 `;
+
 export const MenuItemLink = styled.a`
     color: ${props => props.theme.color.info};
     padding: 2px;
-    text-decoration: none;
+    text-decoration: none; 
     margin: 7px 0;
     display: flex;
     align-items: center;
