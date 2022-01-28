@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Outlet } from 'react-router-dom';
 
 import GlobalStyles from './styles/GlobalStyles';
 import { ThemeProvider } from 'styled-components';
@@ -14,7 +13,6 @@ ReactDOM.render(
   <ThemeProvider theme={dark}>
     <React.StrictMode>
       <GlobalStyles />
-      <Outlet />
       <ContentRoutes />
     </React.StrictMode>
   </ThemeProvider>,
