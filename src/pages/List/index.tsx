@@ -13,7 +13,13 @@ import BallanceHistoryCard from '../../components/BallanceHistoryCard';
 const List: React.FC = () => {
     const { type } = useParams();
     const title = useMemo(() => {
-        return type === 'entry-ballance' ? 'Entradas' : 'Saídas';
+        return type === 'entry-ballance' ? {
+            title: 'Entradas',
+            lineColor: '#F7931B'
+        } : {
+            title: 'Saídas',
+            lineColor: '#E44C4E'
+        };
     }, [type])
 
     const months = [
@@ -32,7 +38,7 @@ const List: React.FC = () => {
 
     return (
     <Container>
-        <ContentHeader title={title} lineColor='#F7931B'>
+        <ContentHeader title={title.title} lineColor={title.lineColor}>
             <SelectInput options={months} />
             <SelectInput options={years} />
         </ContentHeader>
