@@ -22,20 +22,27 @@ export const Filters = styled.div`
 
         margin: 0 10px;
 
-        transition: opacity .3s;
-
+        transition: all .5s;
         &:hover {
             opacity: .7;
         }
     }
-
+    
     .tag-filter::after {
         content: '';
         display: block;
-        min-width: 70px;
-        max-width: 80%;
+        min-width: 50px;
+        max-width: 75%;
         margin: 2.5px auto;
-        margin-right: 2.5px;
+        margin-right: 5px;
+        margin-left: 10px;
+    }
+
+    .tag-filter:hover:after {
+        transition: all .5s;
+        max-width: 90%;
+        margin-right: auto;
+        margin-left: 2.5px;
     }
 
     .tag-filter-recurrent::after {
