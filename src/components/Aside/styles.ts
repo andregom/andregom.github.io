@@ -25,7 +25,7 @@ export const Title = styled.h3`
 export const MenuContainer = styled.nav`
     display: flex;
     flex-direction: column;
-    maring-top: 50px;
+    margin-top: 50px;
 
     > * {
         text-decoration: none;
@@ -45,7 +45,7 @@ export const MenuItemLink = styled.a`
     }
 
     > svg {
-        fons-size: 18px;
+        font-size: 18px;
         margin-right: 5px;
     }
 `;
