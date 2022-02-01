@@ -74,10 +74,7 @@ const List: React.FC = () => {
         setData(formattedData);
     },[pathDependentProps, monthSelected, yearSelected]);
 
-    useEffect(() => {
-    }, [datesWithTransactions, yearSelected, validMonths, validYears]);
-
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (validYears.length > 0) {
             if (!validYears.some(month => month.value == yearSelected))
                 setYearSelected(String(validYears[0].value));
@@ -94,8 +91,8 @@ const List: React.FC = () => {
     return (
     <Container>
         <ContentHeader title={pathDependentProps.title} lineColor={pathDependentProps.lineColor}>
-            <SelectInput options={validMonths} onChange={(e) => setMonthSelected(e.target.value)} defaultValue={monthSelected} />
-            <SelectInput options={validYears} onChange={(e) => setYearSelected(e.target.value)} defaultValue={yearSelected} />
+            <SelectInput options={validMonths} onChange={(e) => setMonthSelected(e.target.value)} defaultValue={monthSelected} value={monthSelected} />
+            <SelectInput options={validYears} onChange={(e) => setYearSelected(e.target.value)} defaultValue={yearSelected} value={yearSelected} />
         </ContentHeader>
 
         <Filters>

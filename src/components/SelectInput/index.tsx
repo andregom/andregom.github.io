@@ -8,16 +8,18 @@ interface ISelectInputProps {
     }[],
     onChange(event: React.ChangeEvent<HTMLSelectElement>): void | undefined;
     defaultValue?: string | number;
+    value?: string | number;
 }
 
 const SelectInput: React.FC<ISelectInputProps> = ({
     options,
     onChange,
-    defaultValue
+    defaultValue,
+    value
  }) => {
     return (
         <Container>
-            <select onChange={onChange} defaultValue={defaultValue}>
+            <select onChange={onChange} defaultValue={defaultValue} value={value}>
                 {
                     options.map(option => (
                         <option
