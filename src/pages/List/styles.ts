@@ -23,8 +23,11 @@ export const Filters = styled.div`
         margin: 0 10px;
 
         transition: all .5s;
+        opacity: .4;
+        transform: scale(.9,.9);
         &:hover {
-            opacity: .7;
+            opacity: 1;
+            transform: scale(1.1, 1.1);
         }
     }
     
@@ -46,10 +49,20 @@ export const Filters = styled.div`
     }
 
     .tag-filter-recurrent::after {
-        border-bottom: 10px solid ${props => props.theme.color.warning}
+        border-bottom: 10px solid ${props => props.theme.color.success}
     }
 
     .tag-filter-eventual::after {
-        border-bottom: 10px solid ${props => props.theme.color.success}
+        border-bottom: 10px solid ${props => props.theme.color.warning}
     }
-`
+
+    .tag-active {
+        opacity: 1;
+        transform: scale(1.05, 1.05);
+
+        &:hover {
+            opacity: .7;
+            transform: scale(.9, .9);
+        }
+    }
+`;

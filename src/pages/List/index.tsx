@@ -1,4 +1,5 @@
-import React, { useMemo, useState, useEffect, useLayoutEffect } from 'react';
+
+import React, { useMemo, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { Container, Content, Filters } from './styles';
@@ -9,13 +10,16 @@ import BallanceHistoryCard from '../../components/BallanceHistoryCard';
 
 import { IData } from '../../interfaces/financialTransactions';
 
-import getListAttrsAndDataByPath from '../../utils/getListAttrsAndDataByPath';
+import getListPageAttrsAndDataByPath from '../../utils/getListPageAttrsAndDataByPath';
 import formatCurrency from '../../utils/formatCurrency';
 import formatDate from '../../utils/formatDate';
 import getDatesWithNonZeroTransactions from '../../utils/getDatesWithNonZeroTransactions';
 
 const List: React.FC = () => {
+    const filterButtons = useRef<HTMLButtonElement[]>([]);
     const [data, setData] = useState<IData[]>([]);
+    const [monthSelected, setMonthSelected] = useState<string>(String(new Date().getMonth() + 1));
+    const [yearSelected, setYearSelected] = useState<string>(String(new Date().getFullYear()));
     const [validMonths, setValidMonths] = useState<{
         value: string | number;
         label: string | number;
@@ -24,20 +28,48 @@ const List: React.FC = () => {
         value: string | number;
         label: string | number;
     }[]>([]);
-    const [monthSelected, setMonthSelected] = useState<string>(String(new Date().getMonth() + 1));
-    const [yearSelected, setYearSelected] = useState<string>(String(new Date().getFullYear()));
+    const [selectedFrequencies, setselectedFrequencies] = useState<{
+        recurrent: boolean,
+        sporadic: boolean 
+    }>({recurrent: true, sporadic: true});
 
     const { type: listType } = useParams();
     
     const pathDependentProps = useMemo(() => {
-        return getListAttrsAndDataByPath(listType)
+        return getListPageAttrsAndDataByPath(listType)
     }, [listType]);
 
     const datesWithTransactions = useMemo(() => {
         return getDatesWithNonZeroTransactions(pathDependentProps.data);
     },[pathDependentProps]);
 
-    useLayoutEffect(() => {
+    const handleFilterButtonClick = (clickedButtonValue: string) => {
+        if (clickedButtonValue !== undefined){
+            if (clickedButtonValue === 'recurrent' || clickedButtonValue === 'sporadic') {
+                handleFrequenceSelector(clickedButtonValue);
+            }
+        }
+    }
+
+    const handleFrequenceSelector = (pressedButtonValue: 'recurrent' | 'sporadic') => {
+        const previousSelectedFrequencies = selectedFrequencies;
+        selectedFrequencies[pressedButtonValue] = !selectedFrequencies[pressedButtonValue];
+        setselectedFrequencies({...selectedFrequencies});
+        const selectedButton = filterButtons.current.filter(el => {return el.value === pressedButtonValue})
+        selectedButton[0].onmouseleave = (e) => 
+        { 
+            const tags = selectedButton[0].className.split(' ');
+            if (tags.some(el => el === 'tag-active') && !previousSelectedFrequencies[pressedButtonValue]) {
+                selectedButton[0].className = tags.filter(item => {
+                    return item !== 'tag-active';
+                }).join(' ');
+            } else {
+                selectedButton[0].className += ' tag-active';
+            }
+        }
+    }
+
+    useEffect(() => {
         const currentValidMonths = datesWithTransactions.find(e => {
             return e.year.value === Number(yearSelected);
         })?.months
@@ -55,8 +87,9 @@ const List: React.FC = () => {
             const date: Date = new Date(item.date);
             const month = String(date.getMonth() + 1);
             const year = String(date.getFullYear());
+            const frequency = item.frequency === 'recorrente' ? 'recurrent' : 'sporadic';
             
-            return month === monthSelected && year === yearSelected;
+            return month === monthSelected && year === yearSelected && selectedFrequencies[frequency];
         });
         
         const formattedData = filteredDate.map(item => {
@@ -72,7 +105,7 @@ const List: React.FC = () => {
         });
         
         setData(formattedData);
-    },[pathDependentProps, monthSelected, yearSelected]);
+    },[pathDependentProps, monthSelected, yearSelected, selectedFrequencies]);
 
     useLayoutEffect(() => {
         if (validYears.length > 0) {
@@ -98,14 +131,20 @@ const List: React.FC = () => {
         <Filters>
             <button
                 type="button"
-                className="tag-filter tag-filter-recurrent"
+                ref={(el: HTMLButtonElement) => filterButtons.current[0] = el}
+                value="recurrent"
+                className={'tag-filter tag-filter-recurrent tag-active'}
+                onClick={(e) => handleFilterButtonClick(e.currentTarget.value)}
             >
                 Recorrentes
             </button>
 
             <button
                 type="button"
-                className="tag-filter tag-filter-eventual"
+                ref={(el: HTMLButtonElement) => filterButtons.current[1] = el}
+                value="sporadic"
+                className={'tag-filter tag-filter-eventual tag-active'}
+                onClick={(e) => handleFilterButtonClick(e.currentTarget.value)}
             >
                 Eventuais
             </button>
