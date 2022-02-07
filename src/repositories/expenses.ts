@@ -20,7 +20,7 @@ const expenses = [
   {"description":"Compras do mês",        "amount":"800.50","type":"saída","frequency":"recorrente","date":"2027-03-17"},
   {"description":"Parcela do Celular 2/5","amount":"150.99","type":"saída","frequency":"eventual",  "date":"2028-03-18"},
   {"description":"Troca de Oléo do carro","amount":"90.00", "type":"saída","frequency":"eventual",  "date":"2023-03-23"},
-  {"description":"Energia elétrica",      "amount":"75.99", "type":"saída","frequency":"recorrente","date":"2020-04-10"},
+  {"description":"Energia elétrica",      "amount":"75.99", "type":"saída","frequency":"recorrente","date":"2020-04-11"},
   {"description":"Água",                  "amount":"80.33", "type":"saída","frequency":"recorrente","date":"2025-04-15"},
   {"description":"Telefone",              "amount":"99.99", "type":"saída","frequency":"recorrente","date":"2023-04-23"},
   {"description":"Plano de Saúde",        "amount":"300.00","type":"saída","frequency":"recorrente","date":"2023-04-23"},
