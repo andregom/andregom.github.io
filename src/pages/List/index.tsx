@@ -82,7 +82,7 @@ const List: React.FC = () => {
         setValidYears(datesWithTransactions.map(dates => dates.year));
     },[datesWithTransactions, listType]);
     
-    useEffect(() => {
+    useLayoutEffect(() => {
         const filteredDate = pathDependentProps.data.filter(item => {
             const date: Date = new Date(item.date);
             const month = String(date.getMonth() + 1);
