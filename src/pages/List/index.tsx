@@ -3,6 +3,7 @@ import React, { useMemo, useState, useEffect, useLayoutEffect, useRef } from 're
 import { useParams } from 'react-router-dom';
 
 import { Container, Content, Filters } from './styles';
+import handleFilterButtonActivationTag from '../../utils/appearance/handleFilterButtonsActivationTag';
 
 import ContentHeader from '../../components/ContentHeader';
 import SelectInput from '../../components/SelectInput';
@@ -11,8 +12,8 @@ import BallanceHistoryCard from '../../components/BallanceHistoryCard';
 import { IData } from '../../interfaces/financialTransactions';
 
 import getListPageAttrsAndDataByPath from '../../utils/getListPageAttrsAndDataByPath';
-import formatCurrency from '../../utils/formatCurrency';
-import formatDate from '../../utils/formatDate';
+import formatCurrency from '../../utils/formatting/formatCurrency';
+import formatDate from '../../utils/formatting/formatDate';
 import getDatesWithNonZeroTransactions from '../../utils/getDatesWithNonZeroTransactions';
 
 const List: React.FC = () => {
@@ -52,21 +53,12 @@ const List: React.FC = () => {
     }
 
     const handleFrequenceSelector = (pressedButtonValue: 'recurrent' | 'sporadic') => {
-        const previousSelectedFrequencies = selectedFrequencies;
-        selectedFrequencies[pressedButtonValue] = !selectedFrequencies[pressedButtonValue];
+        const currentFilterState = !selectedFrequencies[pressedButtonValue];
+        selectedFrequencies[pressedButtonValue] = currentFilterState;
         setselectedFrequencies({...selectedFrequencies});
-        const selectedButton = filterButtons.current.filter(el => {return el.value === pressedButtonValue})
-        selectedButton[0].onmouseleave = (e) => 
-        { 
-            const tags = selectedButton[0].className.split(' ');
-            if (tags.some(el => el === 'tag-active') && !previousSelectedFrequencies[pressedButtonValue]) {
-                selectedButton[0].className = tags.filter(item => {
-                    return item !== 'tag-active';
-                }).join(' ');
-            } else {
-                selectedButton[0].className += ' tag-active';
-            }
-        }
+        const selectedButton = filterButtons.current.filter(el => {return el.value === pressedButtonValue})[0];
+        
+        handleFilterButtonActivationTag(selectedButton, currentFilterState); 
     }
 
     useEffect(() => {
