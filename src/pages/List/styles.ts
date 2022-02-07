@@ -4,19 +4,22 @@ export const Container = styled.div`
 
 `
 
-export const Content = styled.div`
+export const Content = styled.main`
 
 `
 
 export const Filters = styled.div`
     width: 100%;
+
     display: flex;
     justify-content: center;
+
     margin-bottom: 10px;
 
     .tag-filter {
         font-size: 18px;
         font-weight: 500;
+
         background: none;
         color: ${props => props.theme.color.white};
 
@@ -25,6 +28,7 @@ export const Filters = styled.div`
         transition: all .5s;
         opacity: .4;
         transform: scale(.9,.9);
+
         &:hover {
             opacity: 1;
             transform: scale(1.1, 1.1);
@@ -43,6 +47,7 @@ export const Filters = styled.div`
 
     .tag-filter:hover:after {
         transition: all .5s;
+        
         max-width: 90%;
         margin-right: auto;
         margin-left: 2.5px;
