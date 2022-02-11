@@ -6,25 +6,32 @@ const handleFilterButtonActivationTag = (button: HTMLButtonElement, currentState
 
 const handleTags = (button: HTMLButtonElement, currentState: boolean) => {
     const activationTag = 'tag-active';
-    const tags = button.className.split(' ');
-    if (alreadyHasTag(tags, activationTag) && isNotSelected(currentState)) {
-        button.className = removeTagFrom(tags, activationTag);
+    const buttonTags = button.className.split(' ');
+    if (alreadyHasTag(buttonTags, activationTag) && isFilterNotSelected(currentState)) {
+        button.className = removeTagFrom(buttonTags, activationTag);
     }
-    else if (!alreadyHasTag(tags, activationTag) && isSelected(currentState)) {
-        button.className += ` ${activationTag}`;
+    else if (tagIsNotPresentIn(buttonTags, activationTag) && isFilterSelected(currentState)) {
+        button.className = addTagTo(button.className, activationTag);
     }
 }
 
+const addTagTo = (tags: string, tag: string) => {
+    return tags += ` ${tag}`;
+}
 
 const alreadyHasTag = (tagsList: string[], tag: string) => {
     return tagsList.some(el => el === tag);
 }
 
-const isSelected = (currentState: boolean) => {
+const tagIsNotPresentIn = (tagsList: string[], tag: string) => {
+    return !alreadyHasTag(tagsList, tag);
+}
+
+const isFilterSelected = (currentState: boolean) => {
     return currentState === true;
 }
 
-const isNotSelected = (currentState: boolean) => {
+const isFilterNotSelected = (currentState: boolean) => {
     return currentState === false;
 }
 
