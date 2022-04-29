@@ -1,32 +1,56 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import ContentHeader from '../../components/ContentHeader';
 import SelectInput from '../../components/SelectInput';
+import WalletBox from '../../components/WalletBox';
 
-import { Container } from './styles';
+import getDatesWithNonZeroTransactions from '../../utils/getDatesWithNonZeroTransactions';
+import getListPageAttrsAndDataByPath from '../../utils/getListPageAttrsAndDataByPath';
+
+import {
+    Container,
+    Content
+} from './styles';
 
 const Dashboard: React.FC = () => {
+    const [monthSelected, setMonthSelected] = useState<number>(new Date().getMonth() + 1);
+    const [yearSelected, setYearSelected] = useState<number>(new Date().getFullYear());
+    const [validMonths, setValidMonths] = useState<{
+        value: string | number;
+        label: string | number;
+    }[]>([]);
+    const [validYears, setValidYears] = useState<{
+        value: string | number;
+        label: string | number;
+    }[]>([]);
 
-    const months = [
-        {value: 7, label: 'Julho'},    
-        {value: 8, label: 'Agosto'},
-        {value: 9, label: 'Setembro'},
-    ];
+    const listType = "all";
+    
+    const pathDependentProps = useMemo(() => {
+        return getListPageAttrsAndDataByPath(listType)
+    }, [listType]);
 
-    const years = [
-        {value: 2022, label: 2022},
-        {value: 2021, label: 2021},
-        {value: 2020, label: 2020},
-        {value: 2019, label: 2019},
-        {value: 2018, label: 2018},    
-    ];
+    const datesWithTransactions = useMemo(() => {
+        return getDatesWithNonZeroTransactions(pathDependentProps.data);
+    }, [pathDependentProps]);
 
     return (
         <Container>
             <ContentHeader title="Dashboard" lineColor='#F7931B'>
-                <SelectInput options={months} onChange={() => {}} />
-                <SelectInput options={years} onChange={() => {}} />
+                <SelectInput options={validMonths} onChange={() => {}} />
+                <SelectInput options={validYears} onChange={() => {}} />
             </ContentHeader>
+
+            <Content>
+                <WalletBox
+                    title = "saldo" 
+                    amount = {150.00} 
+                    footerLabel = "atualizado com base nas entradas e saídas" 
+                    icon = "dolar" 
+                    color = "#4E41F0"
+                />
+            </Content>
         </Container>
     )
 }

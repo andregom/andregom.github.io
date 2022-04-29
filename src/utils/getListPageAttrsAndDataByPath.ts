@@ -5,7 +5,7 @@ const getListPageAttrsAndDataByPath = (ballanceListType: string | undefined) => 
     if (ballanceListType === 'entry-ballance') {
         return {
             title: 'Entradas',
-            lineColor: '#F7931B',
+            lineColor: '#4E41F0',
             data: gains
         };
     } else if (ballanceListType === 'exit-ballance') {
@@ -13,6 +13,12 @@ const getListPageAttrsAndDataByPath = (ballanceListType: string | undefined) => 
             title: 'Saídas',
             lineColor: '#E44C4E',
             data: expenses
+        };
+    } else if (ballanceListType === 'all') {
+        return {
+            title: 'Todas',
+            lineColor: '#F5F5F5',
+            data: [...gains, ...expenses]
         };
     } else {
         return {

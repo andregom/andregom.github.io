@@ -19,8 +19,8 @@ import getDatesWithNonZeroTransactions from '../../utils/getDatesWithNonZeroTran
 const List: React.FC = () => {
     const filterButtons = useRef<HTMLButtonElement[]>([]);
     const [data, setData] = useState<IData[]>([]);
-    const [monthSelected, setMonthSelected] = useState<string>(String(new Date().getMonth() + 1));
-    const [yearSelected, setYearSelected] = useState<string>(String(new Date().getFullYear()));
+    const [monthSelected, setMonthSelected] = useState<number>(new Date().getMonth() + 1);
+    const [yearSelected, setYearSelected] = useState<number>(new Date().getFullYear());
     const [validMonths, setValidMonths] = useState<{
         value: string | number;
         label: string | number;
@@ -42,7 +42,7 @@ const List: React.FC = () => {
 
     const datesWithTransactions = useMemo(() => {
         return getDatesWithNonZeroTransactions(pathDependentProps.data);
-    },[pathDependentProps]);
+    }, [pathDependentProps]);
 
     const handleFilterButtonClick = (clickedButtonValue: string) => {
         if (clickedButtonValue !== undefined){
@@ -77,8 +77,8 @@ const List: React.FC = () => {
     useLayoutEffect(() => {
         const filteredDate = pathDependentProps.data.filter(item => {
             const date: Date = new Date(item.date);
-            const month = String(date.getMonth() + 1);
-            const year = String(date.getFullYear());
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear();
             const frequency = item.frequency === 'recorrente' ? 'recurrent' : 'sporadic';
             
             return month === monthSelected && year === yearSelected && selectedFrequencies[frequency];
@@ -102,22 +102,22 @@ const List: React.FC = () => {
     useLayoutEffect(() => {
         if (validYears.length > 0) {
             if (!validYears.some(month => month.value == yearSelected))
-                setYearSelected(String(validYears[0].value));
+                setYearSelected(Number(validYears[0].value));
         }
     }, [validYears, datesWithTransactions, listType]);
 
     useEffect(() => {
         if (validMonths.length > 0) {
             if (!validMonths.some(month => month.value == monthSelected))
-                setMonthSelected(String(validMonths[0].value));
+                setMonthSelected(Number(validMonths[0].value));
         }
     }, [yearSelected, validMonths]);
     
     return (
     <Container>
         <ContentHeader title={pathDependentProps.title} lineColor={pathDependentProps.lineColor}>
-            <SelectInput options={validMonths} onChange={(e) => setMonthSelected(e.target.value)} defaultValue={monthSelected} value={monthSelected} />
-            <SelectInput options={validYears} onChange={(e) => setYearSelected(e.target.value)} defaultValue={yearSelected} value={yearSelected} />
+            <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} defaultValue={monthSelected} value={monthSelected} />
+            <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} defaultValue={yearSelected} value={yearSelected} />
         </ContentHeader>
 
         <Filters>
