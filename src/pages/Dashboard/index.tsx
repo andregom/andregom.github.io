@@ -73,16 +73,12 @@ const Dashboard: React.FC = () => {
     const totalCount = useMemo(() => memoize((listOfTransactions) => {
         let total: number = 0;
         
-        console.log(monthSelected)
         listOfTransactions.forEach((item: IRawData) => {
-            console.log(monthSelected)
-            console.log(monthSelected)
             const date = new Date(item.date);
             const year = date.getFullYear();                
             const month = date.getMonth() + 1;
 
             if (month == monthSelected && year == yearSelected) {
-                console.table(item);
                 try {
                     total += Number(item.amount);
                 } catch {
