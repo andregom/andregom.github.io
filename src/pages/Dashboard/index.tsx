@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import ContentHeader from '../../components/ContentHeader';
@@ -34,6 +34,19 @@ const Dashboard: React.FC = () => {
     const datesWithTransactions = useMemo(() => {
         return getDatesWithNonZeroTransactions(pathDependentProps.data);
     }, [pathDependentProps]);
+
+    useEffect(() => {
+        const currentValidMonths = datesWithTransactions.find(e => {
+            return e.year.value === Number(yearSelected);
+        })?.months
+        
+        if(currentValidMonths !== undefined) setValidMonths(currentValidMonths);
+        else setValidMonths([]);
+    },[datesWithTransactions, yearSelected, listType]);
+    
+    useEffect(() => {
+        setValidYears(datesWithTransactions.map(dates => dates.year));
+    },[datesWithTransactions, listType]);
 
     return (
         <Container>
