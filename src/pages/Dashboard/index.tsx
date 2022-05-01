@@ -13,6 +13,7 @@ import getListPageAttrsAndDataByPath from '../../utils/getListPageAttrsAndDataBy
 
 import happyImg from '../../assets/happy.svg';
 import sadImg from '../../assets/sad.svg';
+import grinningImg from '../../assets/grinning.svg';
 
 import {
     Container,
@@ -34,7 +35,7 @@ const Dashboard: React.FC = () => {
     }[]>([]);
 
     const listType = "all";
-    
+
     const pathDependentProps = useMemo(() => {
         return getListPageAttrsAndDataByPath(listType)
     }, [listType]);
@@ -47,14 +48,14 @@ const Dashboard: React.FC = () => {
         const currentValidMonths = datesWithTransactions.find(e => {
             return e.year.value === Number(yearSelected);
         })?.months
-        
-        if(currentValidMonths !== undefined) setValidMonths(currentValidMonths);
+
+        if (currentValidMonths !== undefined) setValidMonths(currentValidMonths);
         else setValidMonths([]);
-    },[datesWithTransactions, yearSelected, listType]);
-    
+    }, [datesWithTransactions, yearSelected, listType]);
+
     useEffect(() => {
         setValidYears(datesWithTransactions.map(dates => dates.year));
-    },[datesWithTransactions, listType]);
+    }, [datesWithTransactions, listType]);
 
     useLayoutEffect(() => {
         if (validYears.length > 0) {
@@ -70,12 +71,12 @@ const Dashboard: React.FC = () => {
         }
     }, [yearSelected, validMonths]);
 
-    const totalCount = useMemo(() => memoize((listOfTransactions) => {
+    const totalSum = useMemo(() => memoize((listOfTransactions) => {
         let total: number = 0;
-        
+
         listOfTransactions.forEach((item: IRawData) => {
             const date = new Date(item.date);
-            const year = date.getFullYear();                
+            const year = date.getFullYear();
             const month = date.getMonth() + 1;
 
             if (month == monthSelected && year == yearSelected) {
@@ -91,43 +92,74 @@ const Dashboard: React.FC = () => {
         return total;
     }), [yearSelected, monthSelected]);
 
+    const totalBallance = useMemo(() => {
+        return totalSum(gains) - totalSum(expenses);
+    }, [totalSum(gains), totalSum(expenses)]);
+
+    const message = useMemo(() => {
+        if (totalBallance < 0) {
+            return {
+                title: "Que pena!",
+                description: "Neste mês, você gastou mais do que deveria.",
+                footerText: "Verifique seus gastos e tente cortar o que for desnecessário.",
+                icon: sadImg
+            }
+        }
+        else if (totalBallance == 0) {
+            return {
+                title: "Ufa!",
+                description: "Neste mês, você gastou exatamente o que ganhou.",
+                footerText: "Tenha cuidado para não ficar no vermelho!.",
+                icon: grinningImg
+            }
+        }
+        else {
+            return {
+                title: "Muito bem!",
+                description: "Sua carteira está positiva!",
+                footerText: "Continue assim. Considere investir o seu saldo.",
+                icon: happyImg
+            }
+        }
+    }, [totalBallance]);
+
     return (
         <Container>
             <ContentHeader title="Dashboard" lineColor='#F7931B'>
-            <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} defaultValue={monthSelected} value={monthSelected} />
-            <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} defaultValue={yearSelected} value={yearSelected} />
+                <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} defaultValue={monthSelected} value={monthSelected} />
+                <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} defaultValue={yearSelected} value={yearSelected} />
             </ContentHeader>
 
             <Content>
                 <WalletBox
-                    title = "saldo" 
-                    amount = {totalCount(gains) - totalCount(expenses)} 
-                    footerLabel = "atualizado com base nas entradas e saídas" 
-                    icon = "dolar" 
-                    color = "#4E41F0"
-                />
-                
-                <WalletBox
-                    title = "entradas" 
-                    amount = {totalCount(gains)} 
-                    footerLabel = "atualizado com base nas entradas e saídas" 
-                    icon = "arrowUp" 
-                    color = "#F7931B"
+                    title="saldo"
+                    amount={totalBallance}
+                    footerLabel="atualizado com base nas entradas e saídas"
+                    icon="dolar"
+                    color="#4E41F0"
                 />
 
                 <WalletBox
-                    title = "saídas" 
-                    amount = {totalCount(expenses)} 
-                    footerLabel = "atualizado com base nas entradas e saídas" 
-                    icon = "arrowDown" 
-                    color = "#E44C4E"
+                    title="entradas"
+                    amount={totalSum(gains)}
+                    footerLabel="atualizado com base nas entradas e saídas"
+                    icon="arrowUp"
+                    color="#F7931B"
+                />
+
+                <WalletBox
+                    title="saídas"
+                    amount={totalSum(expenses)}
+                    footerLabel="atualizado com base nas entradas e saídas"
+                    icon="arrowDown"
+                    color="#E44C4E"
                 />
 
                 <MessageBox
-                    title = "Muito bem!"
-                    description = "Sua carteira está positiva!"
-                    footerText = "Continue assim. Considere investir o seu saldo."
-                    icon = {happyImg}
+                    title={message.title}
+                    description={message.description}
+                    footerText={message.footerText}
+                    icon={message.icon}
                 />
             </Content>
         </Container>
