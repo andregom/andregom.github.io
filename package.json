@@ -2,7 +2,7 @@
   "name": "minha-carteira",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://andregom.githb.io",
+  "homepage": "https://andregom.github.io/minha-carteira/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
