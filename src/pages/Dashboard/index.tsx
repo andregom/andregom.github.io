@@ -21,6 +21,7 @@ import {
 } from './styles';
 import expenses from '../../repositories/expenses';
 import gains from '../../repositories/gains';
+import PieChartComponent from '../../components/PieChart';
 
 const Dashboard: React.FC = () => {
     const [monthSelected, setMonthSelected] = useState<number>(new Date().getMonth() + 1);
@@ -92,9 +93,16 @@ const Dashboard: React.FC = () => {
         return total;
     }), [yearSelected, monthSelected]);
 
-    const totalBallance = useMemo(() => {
-        return totalSum(gains) - totalSum(expenses);
+    const accumulated = useMemo(() => {
+        return {
+            gains: totalSum(gains),
+            expenses: totalSum(expenses)
+        }
     }, [totalSum(gains), totalSum(expenses)]);
+
+    const totalBallance = useMemo(() => {
+        return accumulated.gains - accumulated.expenses;
+    }, [accumulated]);
 
     const message = useMemo(() => {
         if (totalBallance < 0) {
@@ -122,6 +130,30 @@ const Dashboard: React.FC = () => {
             }
         }
     }, [totalBallance]);
+
+    const realationExpensesVersusGains = useMemo(() => {
+        const total = accumulated.gains + accumulated.expenses
+
+        const gainsPercent = (accumulated.gains / total) * 100;
+        const expensesPercent = (accumulated.expenses / total) * 100;
+
+        const data = [
+            {
+                name: "Entradas",
+                value: accumulated.gains,
+                percent: Number(gainsPercent.toFixed(1)),
+                color: "#F7931B"
+            },
+            {
+                name: "Saídas",
+                value: accumulated.expenses,
+                percent: Number(expensesPercent.toFixed(1)),
+                color: "#E44C4E"
+            }
+        ];
+        
+        return data;
+    }, [accumulated]);
 
     return (
         <Container>
@@ -161,6 +193,8 @@ const Dashboard: React.FC = () => {
                     footerText={message.footerText}
                     icon={message.icon}
                 />
+
+                <PieChartComponent data={realationExpensesVersusGains} />
             </Content>
         </Container>
     )
