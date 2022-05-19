@@ -35,7 +35,7 @@ const HistoryBox: React.FC<IHistoryBoxProps> = ({
                     <Line 
                         type="monotone"
                         dataKey="entriesAmount"
-                        name="Saídas"
+                        name="Entradas"
                         stroke={lineColorEntriesAmount}
                         strokeWidth={5}
                         dot={{ r: 5 }}
