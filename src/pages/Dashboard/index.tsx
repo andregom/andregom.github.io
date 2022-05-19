@@ -10,6 +10,8 @@ import { IRawData } from '../../interfaces/financialTransactionsRaw';
 
 import getDatesWithNonZeroTransactions from '../../utils/getDatesWithNonZeroTransactions';
 import getListPageAttrsAndDataByPath from '../../utils/getListPageAttrsAndDataByPath';
+import months from '../../utils/allMonthsList';
+import allMonths from '../../utils/allMonthsList';
 
 import happyImg from '../../assets/happy.svg';
 import sadImg from '../../assets/sad.svg';
@@ -22,6 +24,7 @@ import {
 import expenses from '../../repositories/expenses';
 import gains from '../../repositories/gains';
 import PieChartComponent from '../../components/PieChart';
+import HistoryBox from '../../HistoryBox';
 
 const Dashboard: React.FC = () => {
     const [monthSelected, setMonthSelected] = useState<number>(new Date().getMonth() + 1);
@@ -92,6 +95,36 @@ const Dashboard: React.FC = () => {
 
         return total;
     }), [yearSelected, monthSelected]);
+
+    const accumulatedBallancesPerMonth = useMemo(() => memoize((listOfTransactions, month, year) => {
+        let accumulatedAmount = 0;
+        listOfTransactions.forEach((transaction: IRawData) => {
+            const date = new Date(transaction.date);
+            const transactionMonth = date.getMonth();
+            const transactionYear = date.getFullYear();
+
+            if(transactionMonth === month && transactionYear === year) {
+                try {
+                    accumulatedAmount += Number(transaction.amount);
+                } catch (error) {
+                    throw new Error('entriesAmount is Invalid. It must be a valid number.')
+                }
+            }
+        });
+
+        return accumulatedAmount;
+    }), []);
+
+    const historyData = useMemo(() => {
+        return (allMonths.map((_, month) => {
+            return {
+                monthNumber: month,
+                month: allMonths[month].substring(0, 3),
+                entriesAmount: accumulatedBallancesPerMonth(gains, month, yearSelected),
+                exitsAmount: accumulatedBallancesPerMonth(expenses, month, yearSelected)
+            }
+        }))
+    }, [yearSelected]);
 
     const accumulated = useMemo(() => {
         return {
@@ -195,6 +228,12 @@ const Dashboard: React.FC = () => {
                 />
 
                 <PieChartComponent data={realationExpensesVersusGains} />
+
+                <HistoryBox
+                    data={historyData}
+                    lineColorEntriesAmount="#F7931B"
+                    lineColorExitsAmount="#E44C4E"
+                />
             </Content>
         </Container>
     )

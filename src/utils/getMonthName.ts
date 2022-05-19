@@ -1,7 +1,7 @@
-const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+import allMonths from './allMonthsList';
 
 const getMonthName = (value: number) => {
-    return months[value]; 
+    return allMonths[value]; 
 }
 
 export default getMonthName;
