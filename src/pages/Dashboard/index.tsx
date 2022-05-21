@@ -116,14 +116,19 @@ const Dashboard: React.FC = () => {
     }), []);
 
     const historyData = useMemo(() => {
-        return (allMonths.map((_, month) => {
+        return allMonths.map((_, month) => {
             return {
                 monthNumber: month,
                 month: allMonths[month].substring(0, 3),
                 entriesAmount: accumulatedBallancesPerMonth(gains, month, yearSelected),
                 exitsAmount: accumulatedBallancesPerMonth(expenses, month, yearSelected)
             }
-        }))
+        }).filter((item: any) => {
+            const currentMonth = new Date().getMonth();
+            const currentYear = new Date().getFullYear();
+
+            return (yearSelected === currentYear && item.monthNumber <= currentMonth) || yearSelected != currentYear;
+        })
     }, [yearSelected]);
 
     const accumulated = useMemo(() => {
@@ -231,8 +236,8 @@ const Dashboard: React.FC = () => {
 
                 <HistoryBox
                     data={historyData}
-                    lineColorEntriesAmount="#F7931B"
-                    lineColorExitsAmount="#E44C4E"
+                    lineColorEntries="#F7931B"
+                    lineColorExits="#E44C4E"
                 />
             </Content>
         </Container>
