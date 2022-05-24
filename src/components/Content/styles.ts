@@ -10,7 +10,7 @@ export const Container = styled.div`
     height: calc(100vh - 70px);
     overflow-y: scroll;
 
-    .scroll {
+/*     .scroll {
         width: 10px;
         scrollbar-color: orange lightyellow;
     }
@@ -38,5 +38,5 @@ export const Container = styled.div`
 
     ::-webkit-scrollbar-track {
         background-color: ${props => props.theme.color.tertiary};
-    }
+    } */
 `;
