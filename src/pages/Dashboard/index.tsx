@@ -286,13 +286,13 @@ const Dashboard: React.FC = () => {
                 />
 
                 <BarChartBox
-                    title="Saídas"
-                    data={relationExpensesRecurrentVsEventual(expenses)}
+                    title="Entrdas"
+                    data={relationExpensesRecurrentVsEventual(gains)}
                 />
 
-<BarChartBox
+                <BarChartBox
                     title="Saídas"
-                    data={relationExpensesRecurrentVsEventual(gains)}
+                    data={relationExpensesRecurrentVsEventual(expenses)}
                 />
             </Content>
         </Container>
