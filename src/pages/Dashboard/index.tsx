@@ -247,8 +247,8 @@ const Dashboard: React.FC = () => {
     return (
         <Container>
             <ContentHeader title="Dashboard" lineColor='#F7931B'>
-                <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} defaultValue={monthSelected} value={monthSelected} />
-                <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} defaultValue={yearSelected} value={yearSelected} />
+                <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} value={monthSelected} />
+                <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} value={yearSelected} />
             </ContentHeader>
 
             <Content>
