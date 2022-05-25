@@ -42,7 +42,6 @@ export const Legend = styled.li<ILegendProps>`
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: bottom;
     align-items: center;
     min-width: min-content;
     
