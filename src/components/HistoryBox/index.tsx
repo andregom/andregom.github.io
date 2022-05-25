@@ -38,11 +38,11 @@ const HistoryBox: React.FC<IHistoryBoxProps> = ({
 
                 <LegendContainer>
                     <Legend color={lineColorEntries}>
-                        <div>30%</div>
+                        <div>50%</div>
                         <span>Entradas</span>
                     </Legend>
                     <Legend color={lineColorExits}>
-                        <div>30%</div>
+                        <div>50%</div>
                         <span>Saídas</span>
                     </Legend>
                 </LegendContainer>
