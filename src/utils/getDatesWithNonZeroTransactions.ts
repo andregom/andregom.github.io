@@ -2,7 +2,7 @@ import { IRawData } from '../interfaces/financialTransactionsRaw';
 import getMonthName from './getMonthName';
 
 
-const getDatesWithNonZeroTransactions = (listData: IRawData[], sort = true, fill = false) => {
+const getDatesWithNonZeroTransactions = (listData: IRawData[], sort = true) => {
 
     var datesWithTransactions: {
         years: {

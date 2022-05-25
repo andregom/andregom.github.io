@@ -10,8 +10,8 @@ import { IRawData } from '../../interfaces/financialTransactionsRaw';
 
 import getDatesWithNonZeroTransactions from '../../utils/getDatesWithNonZeroTransactions';
 import getListPageAttrsAndDataByPath from '../../utils/getListPageAttrsAndDataByPath';
-import months from '../../utils/allMonthsList';
 import allMonths from '../../utils/allMonthsList';
+import fillWithNonTransactionDates from '../../utils/fillNonTransactionValues';
 
 import happyImg from '../../assets/happy.svg';
 import sadImg from '../../assets/sad.svg';
@@ -37,6 +37,7 @@ const Dashboard: React.FC = () => {
     const [validYears, setValidYears] = useState<{
         value: string | number;
         label: string | number;
+        empty: boolean
     }[]>([]);
 
     const listType = "all";
@@ -59,7 +60,11 @@ const Dashboard: React.FC = () => {
     }, [datesWithTransactions, yearSelected, listType]);
 
     useEffect(() => {
-        setValidYears(datesWithTransactions.map(dates => dates.year));
+        const validYears = datesWithTransactions.map(dates => dates.year);
+        const allDatesWithinThePeriod = fillWithNonTransactionDates(datesWithTransactions);
+        const labeledEmptyAndNotEmptyYears = allDatesWithinThePeriod.map(dates => dates.year);
+
+        setValidYears(labeledEmptyAndNotEmptyYears);
     }, [datesWithTransactions, listType]);
 
     useLayoutEffect(() => {
@@ -104,7 +109,7 @@ const Dashboard: React.FC = () => {
             const transactionMonth = date.getMonth();
             const transactionYear = date.getFullYear();
 
-            if(transactionMonth === month && transactionYear === year) {
+            if (transactionMonth === month && transactionYear === year) {
                 try {
                     accumulatedAmount += Number(transaction.amount);
                 } catch (error) {
@@ -132,36 +137,36 @@ const Dashboard: React.FC = () => {
         })
     }, [yearSelected]);
 
-    const relationExpensesRecurrentVsEventual = useMemo(() => memoize((gains=undefined, expeneses=undefined) => {
+    const relationExpensesRecurrentVsEventual = useMemo(() => memoize((gains = undefined, expeneses = undefined) => {
         let transactions = gains ? gains : [];
         transactions = expeneses ? expeneses : transactions;
         let recurrentAmount = 0;
         let eventualAmount = 0;
 
         transactions
-        .filter((expense: IRawData) => {
-            const date = new Date(expense.date);
-            const year = date.getFullYear();
-            const month = date.getMonth() + 1;
+            .filter((expense: IRawData) => {
+                const date = new Date(expense.date);
+                const year = date.getFullYear();
+                const month = date.getMonth() + 1;
 
-            return month === monthSelected && year === yearSelected;
-        })
-        .forEach((expense: IRawData) => {
-            if (expense.frequency === 'recorrente') {
-                return recurrentAmount += Number(expense.amount);
-            }
+                return month === monthSelected && year === yearSelected;
+            })
+            .forEach((expense: IRawData) => {
+                if (expense.frequency === 'recorrente') {
+                    return recurrentAmount += Number(expense.amount);
+                }
 
-            if (expense.frequency === 'eventual') {
-                return eventualAmount += Number(expense.amount);
-            }
-        });
+                if (expense.frequency === 'eventual') {
+                    return eventualAmount += Number(expense.amount);
+                }
+            });
 
         const total = recurrentAmount + eventualAmount;
 
         const isRecurrentAmountZero = recurrentAmount === 0;
         const recurrentPercentage = isRecurrentAmountZero ? 0
             : ((recurrentAmount / total) * 100);
-        
+
         const isEventualAmountZero = eventualAmount === 0;
         const eventualPercentage = isEventualAmountZero ? 0
             : ((eventualAmount / total) * 100);
@@ -240,15 +245,24 @@ const Dashboard: React.FC = () => {
                 color: "#E44C4E"
             }
         ];
-        
+
         return data;
     }, [accumulated]);
 
     return (
         <Container>
             <ContentHeader title="Dashboard" lineColor='#F7931B'>
-                <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} value={monthSelected} />
-                <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} value={yearSelected} />
+                <SelectInput
+                    options={validMonths}
+                    onChange={(e) =>
+                        setMonthSelected(Number(e.target.value))}
+                    value={monthSelected} />
+                    
+                <SelectInput
+                    options={validYears}
+                    onChange={(e) =>
+                        setYearSelected(Number(e.target.value))}
+                    value={yearSelected} />
             </ContentHeader>
 
             <Content>
