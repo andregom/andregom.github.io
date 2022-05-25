@@ -15,7 +15,9 @@ const getDatesWithNonZeroTransactions = (listData: IRawData[]) => {
         const year = date.getFullYear();
         const month = date.getMonth();
 
-        if(!datesWithTransactions.years.some(e => e.value === year)) {
+        const isYearNotYetPresentinDatesWithTransactions = !datesWithTransactions.years.some(yearObject => yearObject.value === year)
+
+        if(isYearNotYetPresentinDatesWithTransactions) {
             datesWithTransactions.years.push({ value: year, months: new Set() });
         }
 
