@@ -135,8 +135,8 @@ const Dashboard: React.FC = () => {
     const relationExpensesRecurrentVsEventual = useMemo(() => memoize((gains=undefined, expeneses=undefined) => {
         let transactions = gains ? gains : [];
         transactions = expeneses ? expeneses : transactions;
-        let amountRecurrent = 0;
-        let amountEventual = 0;
+        let recurrentAmount = 0;
+        let eventualAmount = 0;
 
         transactions
         .filter((expense: IRawData) => {
@@ -148,28 +148,34 @@ const Dashboard: React.FC = () => {
         })
         .forEach((expense: IRawData) => {
             if (expense.frequency === 'recorrente') {
-                return amountRecurrent += Number(expense.amount);
+                return recurrentAmount += Number(expense.amount);
             }
 
             if (expense.frequency === 'eventual') {
-                return amountEventual += Number(expense.amount);
+                return eventualAmount += Number(expense.amount);
             }
         });
 
-        const total = amountRecurrent + amountEventual;
-        const recurrentPercentage = amountRecurrent === 0 ? 0 : ((amountRecurrent / total) * 100);
-        const eventualPercentage = amountEventual === 0 ? 0 : ((amountEventual / total) * 100);
+        const total = recurrentAmount + eventualAmount;
+
+        const isRecurrentAmountZero = recurrentAmount === 0;
+        const recurrentPercentage = isRecurrentAmountZero ? 0
+            : ((recurrentAmount / total) * 100);
+        
+        const isEventualAmountZero = eventualAmount === 0;
+        const eventualPercentage = isEventualAmountZero ? 0
+            : ((eventualAmount / total) * 100);
 
         return [
             {
                 name: 'Recorrentes',
-                amount: amountRecurrent,
+                amount: recurrentAmount,
                 percent: Number(recurrentPercentage.toFixed(1)),
                 color: "#F7931B"
             },
             {
                 name: 'Eventuais',
-                amount: amountEventual,
+                amount: eventualAmount,
                 percent: Number(eventualPercentage.toFixed(1)),
                 color: "#E44C4E"
             }
