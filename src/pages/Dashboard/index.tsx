@@ -286,7 +286,7 @@ const Dashboard: React.FC = () => {
                 />
 
                 <BarChartBox
-                    title="Entrdas"
+                    title="Entradas"
                     data={relationExpensesRecurrentVsEventual(gains)}
                 />
 
