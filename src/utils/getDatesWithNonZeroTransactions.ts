@@ -22,7 +22,7 @@ const getDatesWithNonZeroTransactions = (listData: IRawData[], sort = true, fill
             datesWithTransactions.years.push({ value: year, months: new Set() });
 
             datesWithTransactions = sort ?
-               { years: datesWithTransactions.years.sort((a, b) => (a.value - b.value)) } : 
+               { years: datesWithTransactions.years.sort((a, b) => (b.value - a.value)) } : 
                 datesWithTransactions;
 
         }
