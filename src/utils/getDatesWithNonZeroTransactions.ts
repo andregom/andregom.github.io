@@ -1,14 +1,15 @@
 import { IRawData } from '../interfaces/financialTransactionsRaw';
 import getMonthName from './getMonthName';
 
-const getDatesWithNonZeroTransactions = (listData: IRawData[]) => {
+
+const getDatesWithNonZeroTransactions = (listData: IRawData[], sort = true, fill = false) => {
 
     var datesWithTransactions: {
         years: {
             value: number,
             months: Set<number>
         }[]
-    } = {years: []};
+    } = { years: [] };
 
     listData.forEach(item => {
         const date = new Date(item.date);
@@ -17,12 +18,17 @@ const getDatesWithNonZeroTransactions = (listData: IRawData[]) => {
 
         const isYearNotYetPresentinDatesWithTransactions = !datesWithTransactions.years.some(yearObject => yearObject.value === year)
 
-        if(isYearNotYetPresentinDatesWithTransactions) {
+        if (isYearNotYetPresentinDatesWithTransactions) {
             datesWithTransactions.years.push({ value: year, months: new Set() });
+
+            datesWithTransactions = sort ?
+               { years: datesWithTransactions.years.sort((a, b) => (a.value - b.value)) } : 
+                datesWithTransactions;
+
         }
 
-        let currentYear = datesWithTransactions.years.find(e => { return e.value === year});
-        if(currentYear) currentYear.months.add(month);
+        let currentYear = datesWithTransactions.years.find(e => { return e.value === year });
+        if (currentYear) currentYear.months.add(month);
     });
 
     return datesWithTransactions.years.map(year => {
