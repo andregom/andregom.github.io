@@ -202,6 +202,14 @@ const Dashboard: React.FC = () => {
                 icon: sadImg
             }
         }
+        else if (totalSum(gains) == 0 && totalSum(expenses) == 0) {
+            return {
+                title: "Op's!",
+                description: "Neste mês, não há registro de entradas ou saídas.",
+                footerText: "Parece que você não executou nenhuma movimentação financeira neste período.",
+                icon: grinningImg
+            }
+        }
         else if (totalBallance == 0) {
             return {
                 title: "Ufa!",
@@ -218,7 +226,7 @@ const Dashboard: React.FC = () => {
                 icon: happyImg
             }
         }
-    }, [totalBallance]);
+    }, [totalBallance, totalSum(gains), totalSum(expenses)]);
 
     const realationExpensesVersusGains = useMemo(() => {
         const total = accumulated.gains + accumulated.expenses
