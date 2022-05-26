@@ -8,6 +8,7 @@ interface ISelectInputProps {
         empty?: boolean;
     }[],
     onChange(event: React.ChangeEvent<HTMLSelectElement>): void | undefined;
+    title?: string;
     defaultValue?: string | number;
     value?: string | number;
 }
@@ -15,13 +16,18 @@ interface ISelectInputProps {
 const SelectInput: React.FC<ISelectInputProps> = ({
     options,
     onChange,
+    title,
     defaultValue,
     value
- }) => {
+}) => {
     return (
         <Container>
-            <select onChange={onChange} defaultValue={defaultValue} value={value}>
-                <optgroup label='Valid Years'>{
+            <select
+                onChange={onChange}
+                defaultValue={defaultValue}
+                value={value}
+            >
+                <optgroup label={`Valid ${title}`}>{
                     options.map(option => (
                         !option.empty && <option
                             key={option.value}
@@ -30,9 +36,9 @@ const SelectInput: React.FC<ISelectInputProps> = ({
                         >
                             {option.label}
                         </option>
-                    ))   
-                }</optgroup>       
-                <optgroup label='Invalid Years'>{
+                    ))
+                }</optgroup>
+                <optgroup label={`Invalid ${title}`}>{
                     options.map(option => (
                         option.empty && <option
                             key={option.value}
@@ -41,8 +47,8 @@ const SelectInput: React.FC<ISelectInputProps> = ({
                         >
                             {option.label}
                         </option>
-                    ))   
-                }</optgroup>       
+                    ))
+                }</optgroup>
             </select>
         </Container>
     );
