@@ -21,18 +21,28 @@ const SelectInput: React.FC<ISelectInputProps> = ({
     return (
         <Container>
             <select onChange={onChange} defaultValue={defaultValue} value={value}>
-                {
+                <optgroup label='Valid Years'>{
                     options.map(option => (
-                        <option
+                        !option.empty && <option
                             key={option.value}
                             value={option.value}
                             disabled={option.empty}
-                            style={{ color: "#9a449aa"} }
                         >
                             {option.label}
                         </option>
                     ))   
-                }         
+                }</optgroup>       
+                <optgroup label='Invalid Years'>{
+                    options.map(option => (
+                        option.empty && <option
+                            key={option.value}
+                            value={option.value}
+                            disabled={option.empty}
+                        >
+                            {option.label}
+                        </option>
+                    ))   
+                }</optgroup>       
             </select>
         </Container>
     );
