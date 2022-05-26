@@ -256,13 +256,17 @@ const Dashboard: React.FC = () => {
                     options={validMonths}
                     onChange={(e) =>
                         setMonthSelected(Number(e.target.value))}
-                    value={monthSelected} />
+                    value={monthSelected}
+                    title='Meses'
+                    />
                     
                 <SelectInput
                     options={validYears}
                     onChange={(e) =>
                         setYearSelected(Number(e.target.value))}
-                    value={yearSelected} />
+                    value={yearSelected}
+                    title='Anos'
+                    />
             </ContentHeader>
 
             <Content>

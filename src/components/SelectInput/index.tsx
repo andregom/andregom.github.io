@@ -1,3 +1,4 @@
+import { title } from 'process';
 import React from 'react';
 import { Container } from './styles';
 
@@ -8,6 +9,7 @@ interface ISelectInputProps {
         empty?: boolean;
     }[],
     onChange(event: React.ChangeEvent<HTMLSelectElement>): void | undefined;
+    title?: string;
     defaultValue?: string | number;
     value?: string | number;
 }
@@ -15,24 +17,26 @@ interface ISelectInputProps {
 const SelectInput: React.FC<ISelectInputProps> = ({
     options,
     onChange,
+    title,
     defaultValue,
     value
- }) => {
+}) => {
     return (
         <Container>
             <select onChange={onChange} defaultValue={defaultValue} value={value}>
-                {
+                <optgroup label={`${title}`}>{
                     options.map(option => (
+
                         <option
                             key={option.value}
                             value={option.value}
-                            disabled={option.empty}
-                            style={{ color: "#9a449aa"} }
+                            className={`${!option.empty ? 'valid-option' : 'invalid-option'}`}
                         >
                             {option.label}
                         </option>
-                    ))   
-                }         
+
+                    ))
+                }</optgroup>
             </select>
         </Container>
     );
