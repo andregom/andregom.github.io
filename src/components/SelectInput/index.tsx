@@ -27,28 +27,20 @@ const SelectInput: React.FC<ISelectInputProps> = ({
                 defaultValue={defaultValue}
                 value={value}
             >
-                <optgroup label={`Valid ${title}`}>{
+                {
                     options.map(option => (
-                        !option.empty && <option
-                            key={option.value}
-                            value={option.value}
-                            disabled={option.empty}
-                        >
-                            {option.label}
-                        </option>
+                        
+                        <optgroup label={`${option.empty ? 'Invalid' : 'Valid'} ${title}`}>
+                            <option
+                                key={option.value}
+                                value={option.value}
+                                disabled={option.empty}
+                            >
+                                {option.label}
+                            </option>
+                        </optgroup>
                     ))
-                }</optgroup>
-                <optgroup label={`Invalid ${title}`}>{
-                    options.map(option => (
-                        option.empty && <option
-                            key={option.value}
-                            value={option.value}
-                            disabled={option.empty}
-                        >
-                            {option.label}
-                        </option>
-                    ))
-                }</optgroup>
+                }
             </select>
         </Container>
     );
