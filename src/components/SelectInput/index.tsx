@@ -35,6 +35,7 @@ const SelectInput: React.FC<ISelectInputProps> = ({
                                 key={option.value}
                                 value={option.value}
                                 disabled={option.empty}
+                                className={`${!option.empty ? 'valid-option' : 'invalid-option'}`}
                             >
                                 {option.label}
                             </option>
