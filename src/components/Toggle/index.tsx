@@ -6,8 +6,20 @@ import {
     ToggleSelector
 } from "./styles";
 
+interface IToggleProps {
+    checked: boolean;
+    labelLeft: string;
+    labelRight: string;
+    onChange(): void;
+}
 
-const Toggle: React.FC = () => {
+
+const Toggle: React.FC<IToggleProps> = ({
+    checked,
+    labelLeft,
+    labelRight,
+    onChange
+}) => {
 
     const [theme, setTheme] = useState(false);
     
@@ -17,14 +29,14 @@ const Toggle: React.FC = () => {
 
     return (
         <Container>
-            < ToggleLabel>Light</ToggleLabel>
+            < ToggleLabel>{labelLeft}</ToggleLabel>
             <ToggleSelector
-                checked = {theme}
+                checked = {checked}
                 uncheckedIcon={false}
                 checkedIcon={false}
-                onChange={() => handleToggle(theme)}
+                onChange={onChange}
             />
-            < ToggleLabel>Dark</ToggleLabel>
+            < ToggleLabel>{labelRight}</ToggleLabel>
         </Container>
     );
 }

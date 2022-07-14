@@ -1,8 +1,10 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useState} from 'react';
 import { sanitize } from 'dompurify';
 
 import Toggle from '../Toggle';
 import emojis from '../../utils/emojis';
+
+import { useTheme } from '../../utils/hooks/themes'
 
 import {
     Container,
@@ -14,13 +16,29 @@ import {
 const EMOJIS_LIST_SIZE = emojis.length;
 
 const MainHeader: React.FC = () => {
+    const { toggleTheme, theme } = useTheme();
+
+    const [darkTheme, setdarkTheme] = useState(() => theme.title === 'dark')
+    
+    const handleChangeTheme = () => {
+        console.log(darkTheme);
+        setdarkTheme(!darkTheme);
+        console.log(darkTheme);
+        toggleTheme();
+    }
+
     const emoji = useMemo(() => {
         const index = Math.floor(Math.random() * EMOJIS_LIST_SIZE)
         return emojis[index];
     }, [])
     return (
         <Container>
-            <Toggle />
+            <Toggle 
+                labelLeft='Light'
+                labelRight='Dark'
+                checked={darkTheme}
+                onChange={handleChangeTheme}
+            />
 
             <Profile>
                 <Welcome>Olá, <div style = {{display:'inline'}} dangerouslySetInnerHTML= {{ __html: sanitize(emoji)}} /></Welcome>
