@@ -23,7 +23,7 @@ const SelectInput: React.FC<ISelectInputProps> = ({
 }) => {
     return (
         <Container>
-            <select onChange={onChange} defaultValue={defaultValue} value={value}>
+            <select onChange={onChange} value={value}>
                 <optgroup label={`${title}`}>{
                     options.map(option => (
 
