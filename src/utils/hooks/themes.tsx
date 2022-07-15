@@ -32,12 +32,22 @@ interface ThemeProviderProps extends React.ReactElement {
     children: React.ReactNode | ReactElement
 }
 
-const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-    const [theme, setTheme] = useState<ITheme>(light);
+const DEFAULT_THEME = dark;
 
-    const toggleTheme = () => {
-        console.log(theme.title);
-        theme.title === 'dark' ? setTheme(light) : setTheme(dark);
+const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+    const [theme, setTheme] = useState<ITheme>(() => {
+        const savedThemeRaw = localStorage.getItem('@minha-carteira:theme') ?? '';
+        const savedTheme = savedThemeRaw ? JSON.parse(savedThemeRaw) as unknown as ITheme : DEFAULT_THEME;
+        return savedTheme; 
+    });
+
+    const alternateAndSaveTheme = (themeToBeSet: ITheme) => {
+        setTheme(themeToBeSet);
+        localStorage.setItem('@minha-carteira:theme', JSON.stringify(themeToBeSet));
+    }
+
+    const toggleTheme = async () => {
+        theme.title === 'dark' ? alternateAndSaveTheme(light) : alternateAndSaveTheme(dark);
     }
 
     return (
