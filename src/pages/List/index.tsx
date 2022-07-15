@@ -32,12 +32,12 @@ const List: React.FC = () => {
     }[]>([]);
     const [selectedFrequencies, setselectedFrequencies] = useState<{
         recurrent: boolean,
-        sporadic: boolean 
-    }>({recurrent: true, sporadic: true});
+        sporadic: boolean
+    }>({ recurrent: true, sporadic: true });
 
     const { theme } = useTheme();
     const { type: listType } = useParams();
-    
+
     const pathDependentProps = useMemo(() => {
         return getListPageAttrsAndDataByPath(listType, theme.title)
     }, [listType, theme]);
@@ -47,7 +47,7 @@ const List: React.FC = () => {
     }, [pathDependentProps]);
 
     const handleFilterButtonClick = (clickedButtonValue: string) => {
-        if (clickedButtonValue !== undefined){
+        if (clickedButtonValue !== undefined) {
             if (clickedButtonValue === 'recurrent' || clickedButtonValue === 'sporadic') {
                 handleFrequenceSelector(clickedButtonValue);
             }
@@ -57,35 +57,35 @@ const List: React.FC = () => {
     const handleFrequenceSelector = (pressedButtonValue: 'recurrent' | 'sporadic') => {
         const currentFilterState = !selectedFrequencies[pressedButtonValue];
         selectedFrequencies[pressedButtonValue] = currentFilterState;
-        setselectedFrequencies({...selectedFrequencies});
-        const selectedButton = filterButtons.current.filter(el => {return el.value === pressedButtonValue})[0];
-        
-        handleFilterButtonActivationTag(selectedButton, currentFilterState); 
+        setselectedFrequencies({ ...selectedFrequencies });
+        const selectedButton = filterButtons.current.filter(el => { return el.value === pressedButtonValue })[0];
+
+        handleFilterButtonActivationTag(selectedButton, currentFilterState);
     }
 
     useEffect(() => {
         const currentValidMonths = datesWithTransactions.find(e => {
             return e.year.value === Number(yearSelected);
         })?.months
-        
-        if(currentValidMonths !== undefined) setValidMonths(currentValidMonths);
+
+        if (currentValidMonths !== undefined) setValidMonths(currentValidMonths);
         else setValidMonths([]);
-    },[datesWithTransactions, yearSelected, listType]);
-    
+    }, [datesWithTransactions, yearSelected, listType]);
+
     useEffect(() => {
         setValidYears(datesWithTransactions.map(dates => dates.year));
-    },[datesWithTransactions, listType]);
-    
+    }, [datesWithTransactions, listType]);
+
     useLayoutEffect(() => {
         const filteredDate = pathDependentProps.data.filter(item => {
             const date: Date = new Date(item.date);
             const month = date.getMonth() + 1;
             const year = date.getFullYear();
             const frequency = item.frequency === 'recorrente' ? 'recurrent' : 'sporadic';
-            
+
             return month === monthSelected && year === yearSelected && selectedFrequencies[frequency];
         });
-        
+
         const formattedData = filteredDate.map(item => {
             return {
                 id: String(Math.random() * filteredDate.length),
@@ -97,9 +97,9 @@ const List: React.FC = () => {
                 tagColor: item.frequency === 'recorrente' ? '#4E41f0' : '#E44C4E'
             }
         });
-        
+
         setData(formattedData);
-    },[pathDependentProps, monthSelected, yearSelected, selectedFrequencies]);
+    }, [pathDependentProps, monthSelected, yearSelected, selectedFrequencies]);
 
     useLayoutEffect(() => {
         if (validYears.length > 0) {
@@ -114,50 +114,60 @@ const List: React.FC = () => {
                 setMonthSelected(Number(validMonths[0].value));
         }
     }, [yearSelected, validMonths]);
-    
+
     return (
-    <Container>
-        <ContentHeader title={pathDependentProps.title} lineColor={pathDependentProps.lineColor}>
-            <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} value={monthSelected} title='Meses'/>
-            <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} value={yearSelected} title='Anos'/>
-        </ContentHeader>
+        <Container>
+            <ContentHeader title={pathDependentProps.title} lineColor={pathDependentProps.lineColor}>
+                <SelectInput
+                    options={validMonths}
+                    onChange={(e) => setMonthSelected(Number(e.target.value))}
+                    value={monthSelected} title='Meses'
+                />
 
-        <Filters>
-            <button
-                type="button"
-                ref={(el: HTMLButtonElement) => filterButtons.current[0] = el}
-                value="recurrent"
-                className={'tag-filter tag-filter-recurrent tag-active'}
-                onClick={(e) => handleFilterButtonClick(e.currentTarget.value)}
-            >
-                Recorrentes
-            </button>
+                <SelectInput
+                    options={validYears}
+                    onChange={(e) => setYearSelected(Number(e.target.value))}
+                    value={yearSelected}
+                    title='Anos'
+                />
+            </ContentHeader>
 
-            <button
-                type="button"
-                ref={(el: HTMLButtonElement) => filterButtons.current[1] = el}
-                value="sporadic"
-                className={'tag-filter tag-filter-eventual tag-active'}
-                onClick={(e) => handleFilterButtonClick(e.currentTarget.value)}
-            >
-                Eventuais
-            </button>
-        </Filters>
+            <Filters>
+                <button
+                    type="button"
+                    ref={(el: HTMLButtonElement) => filterButtons.current[0] = el}
+                    value="recurrent"
+                    className={'tag-filter tag-filter-recurrent tag-active'}
+                    onClick={(e) => handleFilterButtonClick(e.currentTarget.value)}
+                >
+                    Recorrentes
+                </button>
 
-        <Content>
-            {
-                data.map(item => (
-                    <BallanceHistoryCard
-                        key={item.id}
-                        tagColor={item.tagColor}
-                        title={item.description}
-                        subtitle={item.dateFormatted}
-                        amount={item.amountFormatted}
-                    />
-                ))
-            }
-        </Content>
-    </Container>)
+                <button
+                    type="button"
+                    ref={(el: HTMLButtonElement) => filterButtons.current[1] = el}
+                    value="sporadic"
+                    className={'tag-filter tag-filter-eventual tag-active'}
+                    onClick={(e) => handleFilterButtonClick(e.currentTarget.value)}
+                >
+                    Eventuais
+                </button>
+            </Filters>
+
+            <Content>
+                {
+                    data.map(item => (
+                        <BallanceHistoryCard
+                            key={item.id}
+                            tagColor={item.tagColor}
+                            title={item.description}
+                            subtitle={item.dateFormatted}
+                            amount={item.amountFormatted}
+                        />
+                    ))
+                }
+            </Content>
+        </Container>)
 }
 
 export default List;
