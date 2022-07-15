@@ -11,7 +11,7 @@ const lightTheme = {
             gray: '#BFBFBF',
 
             success: '#76a381',
-            info: '#59599f',
+            info: '#8686d6',
             warning: '#FF6961',
         }
 }

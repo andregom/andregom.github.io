@@ -1,17 +1,21 @@
+import * as themes from '../styles/themes';
+
 import gains from '../repositories/gains';
 import expenses from '../repositories/expenses';
 
-const getListPageAttrsAndDataByPath = (ballanceListType: string | undefined) => {
+const getListPageAttrsAndDataByPath = (ballanceListType: string | undefined, currentThemeTitle: string) => {
+    
+    const currentTheme = currentThemeTitle === 'dark' ? themes.darkTheme : themes.lightTheme;
     if (ballanceListType === 'entry-ballance') {
         return {
             title: 'Entradas',
-            lineColor: '#4E41F0',
+            lineColor: `${currentTheme.color.info}`,
             data: gains
         };
     } else if (ballanceListType === 'exit-ballance') {
         return {
             title: 'Saídas',
-            lineColor: '#E44C4E',
+            lineColor: `${currentTheme.color.warning}`,
             data: expenses
         };
     } else if (ballanceListType === 'all') {

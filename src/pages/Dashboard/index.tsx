@@ -21,11 +21,15 @@ import {
     Container,
     Content
 } from './styles';
+
 import expenses from '../../repositories/expenses';
 import gains from '../../repositories/gains';
+
 import PieChartComponent from '../../components/PieChart';
 import HistoryBox from '../../components/HistoryBox';
 import BarChartBox from '../../components/BarChartBox';
+
+import { useTheme } from '../../utils/hooks/themes'
 
 const Dashboard: React.FC = () => {
     const [monthSelected, setMonthSelected] = useState<number>(new Date().getMonth() + 1);
@@ -40,11 +44,13 @@ const Dashboard: React.FC = () => {
         empty: boolean
     }[]>([]);
 
+    const { theme } = useTheme();
+
     const listType = "all";
 
     const pathDependentProps = useMemo(() => {
-        return getListPageAttrsAndDataByPath(listType)
-    }, [listType]);
+        return getListPageAttrsAndDataByPath(listType, theme.title)
+    }, [listType, theme]);
 
     const datesWithTransactions = useMemo(() => {
         return getDatesWithNonZeroTransactions(pathDependentProps.data);

@@ -15,6 +15,7 @@ import getListPageAttrsAndDataByPath from '../../utils/getListPageAttrsAndDataBy
 import formatCurrency from '../../utils/formatting/formatCurrency';
 import formatDate from '../../utils/formatting/formatDate';
 import getDatesWithNonZeroTransactions from '../../utils/getDatesWithNonZeroTransactions';
+import { useTheme } from '../../utils/hooks/themes';
 
 const List: React.FC = () => {
     const filterButtons = useRef<HTMLButtonElement[]>([]);
@@ -34,11 +35,12 @@ const List: React.FC = () => {
         sporadic: boolean 
     }>({recurrent: true, sporadic: true});
 
+    const { theme } = useTheme();
     const { type: listType } = useParams();
     
     const pathDependentProps = useMemo(() => {
-        return getListPageAttrsAndDataByPath(listType)
-    }, [listType]);
+        return getListPageAttrsAndDataByPath(listType, theme.title)
+    }, [listType, theme]);
 
     const datesWithTransactions = useMemo(() => {
         return getDatesWithNonZeroTransactions(pathDependentProps.data);
@@ -116,8 +118,8 @@ const List: React.FC = () => {
     return (
     <Container>
         <ContentHeader title={pathDependentProps.title} lineColor={pathDependentProps.lineColor}>
-            <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} defaultValue={monthSelected} value={monthSelected} />
-            <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} defaultValue={yearSelected} value={yearSelected} />
+            <SelectInput options={validMonths} onChange={(e) => setMonthSelected(Number(e.target.value))} value={monthSelected} title='Meses'/>
+            <SelectInput options={validYears} onChange={(e) => setYearSelected(Number(e.target.value))} value={yearSelected} title='Anos'/>
         </ContentHeader>
 
         <Filters>
