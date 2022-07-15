@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 import App from './app.routes';
 
@@ -12,9 +12,9 @@ const ContentRoutes: React.FC = () => {
     const { theme } = useTheme();
     return (
         <ThemeProvider theme={theme}>
-            <BrowserRouter>
+            <HashRouter>
                 <App />
-            </BrowserRouter>
+            </HashRouter>
         </ThemeProvider>
     )
 }
