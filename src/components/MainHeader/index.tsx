@@ -21,9 +21,7 @@ const MainHeader: React.FC = () => {
     const [darkTheme, setdarkTheme] = useState(() => theme.title === 'dark')
     
     const handleChangeTheme = () => {
-        console.log(darkTheme);
         setdarkTheme(!darkTheme);
-        console.log(darkTheme);
         toggleTheme();
     }
 
