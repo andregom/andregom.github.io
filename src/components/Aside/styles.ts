@@ -32,7 +32,7 @@ export const MenuContainer = styled.nav`
     }
 `;
 
-export const MenuItemLink = styled.a`
+export const MenuItemLink = styled.div`
     color: ${props => props.theme.color.info};
     padding: 2px;
     text-decoration: none; 
