@@ -49,3 +49,24 @@ export const MenuItemLink = styled.div`
         margin-right: 5px;
     }
 `;
+
+export const LogoutButton = styled.div`
+    font-size: 17px;
+    color: ${props => props.theme.color.info};
+
+    border: none;
+    background: none;
+
+    text-decoration: none; 
+    display: flex;
+    align-items: center;
+    transition: opacity .3s;
+    &:hover {
+        opacity: .5;
+    }
+
+    > svg {
+        font-size: 18px;
+        margin-right: 5px;
+    }
+`;
