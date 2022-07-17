@@ -1,7 +1,6 @@
 import React, {useMemo, useState} from 'react';
 import { sanitize } from 'dompurify';
 
-import Toggle from '../Toggle';
 import emojis from '../../utils/emojis';
 
 import { useTheme } from '../../utils/hooks/themes'
@@ -10,7 +9,8 @@ import {
     Container,
     Profile,
     Welcome,
-    UserName
+    UserName,
+    Toggle
 } from './styles';
 
 const EMOJIS_LIST_SIZE = emojis.length;
