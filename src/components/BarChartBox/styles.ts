@@ -35,8 +35,8 @@ export const LegendContainer = styled.ul`
 
     height: 170px;
     padding-right: 12px;
-    overflow-y: scroll;
-    `;
+    overflow-y: hidden;
+`;
 
 export const Legend = styled.li<ILegendProps>`
     display: flex;

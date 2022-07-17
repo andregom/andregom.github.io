@@ -18,6 +18,10 @@ export const Container = styled.div`
     padding: 30px 20px;
     
     border-radius: 7px;
+    
+    @media (max-width: 1280px) {
+        height: max-content;
+    }
 `;
 
 export const ChartContainer = styled.div`
@@ -35,21 +39,34 @@ export const Header = styled.header`
         margin-bottom: 20px;
         padding-left: 17px;
     }
-    `;
+
+    @media (max-width: 430px) {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+`;
 
 export const LegendContainer = styled.ul`
     list-style: none;
     
     display: flex;
     padding-right: 17px;
+    
+    @media (max-width: 430px) {
+        padding-left: 10px;
+        padding-bottom: 10px;
+    }
 `;
 
 export const Legend = styled.li<ILegendProps>`
     display: flex;
     align-items: center;
-
+    
     margin-bottom: 7px;
     margin-left: 7px;
+    padding-right: 10px;
+
     
     > div {
         background-color: ${props => props.color};
@@ -62,7 +79,7 @@ export const Legend = styled.li<ILegendProps>`
         line-height: 40px;
         text-align: center;
     }
-
+    
     > span {
         margin-left: 5px;
     }
